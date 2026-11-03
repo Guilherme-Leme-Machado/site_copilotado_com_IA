@@ -1,0 +1,16 @@
+.navbar-nav {
+    display: flex;
+    justify-content: center;
+
+    width: 100%;
+}
+
+.nav-link:hover {
+    text-decoration: overline;
+
+    color: darkblue;
+}
+
+.sticky-top {
+    top: 20px;
+}
