@@ -31,9 +31,12 @@ O site discute como isso se conecta a solidão, sobrecarga cognitiva, burnout e 
 ### Principais funcionalidades
 
 - Navegação responsiva entre as quatro páginas (Bootstrap *navbar* com *collapse*).
+- **Modo escuro / claro** em todas as páginas, com botão na navbar, preferência salva no navegador e detecção automática do tema do sistema (`prefers-color-scheme`).
 - Quatro gráficos interativos com Chart.js (2 de linha e 2 de pizza).
 - Cálculo e feedback em tempo real, sem backend.
-- Exportação para PDF via `window.print()` com folha de estilo de impressão dedicada (`@media print`).
+- **Modais de confirmação** (Bootstrap *modal*) exibidos apenas quando o usuário aciona o botão de atualizar/calcular, e não no carregamento da página.
+- Visual com *glassmorphism* nos cards (`backdrop-filter`) e animações CSS (`fadeIn`, `pulse`).
+- Exportação para PDF via `window.print()` com folha de estilo de impressão dedicada (`@media print`), que força fundo branco e texto preto mesmo no modo escuro.
 - Sumário lateral fixo (*sticky*) e *accordion* de perguntas e respostas na página principal.
 
 ---
@@ -47,12 +50,13 @@ site_copilotado_com_IA/
 ├── simulador_cognitivo.html        # Microaplicação 2: Sobrecarga Cognitiva
 ├── teste_autopercepcao.html        # Microaplicação 3: Autopercepção Socioemocional
 ├── css/
-│   └── styles.css                  # Design tokens, componentes e regras de impressão
+│   └── styles.css                  # Design tokens (claro/escuro), glassmorphism, animações, impressão
 ├── js/
 │   ├── index_chart.js              # Configuração dos 4 gráficos Chart.js
 │   ├── gerador_script.js           # Lógica do Gerador de Desconexão
 │   ├── simulador_script.js         # Lógica do Simulador Cognitivo
-│   └── percepcao_script.js         # Lógica do Teste de Autopercepção
+│   ├── percepcao_script.js         # Lógica do Teste de Autopercepção
+│   └── theme_toggle.js             # Alternância de tema claro/escuro (todas as páginas)
 ├── AUDITORIA_IA.md                 # Registro de engenharia de prompt e auditoria crítica
 └── README.md                       # Este documento
 ```
@@ -77,6 +81,8 @@ DOMContentLoaded → seleção de elementos → listeners → função de cálcu
 | **Card de formulário** | 3 ferramentas | Entrada de dados (`.card-hover-effect`, oculto na impressão via `.d-print-none`) |
 | **Card de resultado** | 3 ferramentas | Painel com barra de progresso, *badge*, lista e alerta de status |
 | **Barra de progresso** | 3 ferramentas | `role="progressbar"` com transição suave (`.transition-progress`) |
+| **Botão de tema** | todas | Criado dinamicamente por `theme_toggle.js` e inserido na `.navbar-nav` (`#themeToggleBtn`) |
+| **Modal de confirmação** | 3 ferramentas | `#modalSucessoGerador`, `#modalSucessoCognitivo` e `#modalSucessoPercepcao`, abertos via `new bootstrap.Modal(el).show()` somente no clique do botão principal |
 | **Canvas de gráfico** | `index.html` | 4 elementos `<canvas>` alimentados pelo Chart.js |
 | **Accordion** | `index.html` | Perguntas e Respostas (Bootstrap *collapse*) |
 
@@ -172,6 +178,28 @@ Faixas: `< 40` moderado · `< 75` bom equilíbrio · `≥ 75` excelente.
 - Faixas: `≥ 16` Altamente Equilibrado · `10–15` Moderação/Atenção · `< 10` Alta Vulnerabilidade.
 - O botão de cálculo só é habilitado quando as 4 perguntas estão respondidas.
 
+**Preferência de tema** (`theme_toggle.js`)
+
+```jsonc
+// localStorage["theme_preference"]
+"light" | "dark"
+```
+
+- O valor é aplicado no atributo `data-theme` do elemento `<html>`; o CSS redefine as variáveis de cor em `[data-theme="dark"]`.
+- Ordem de decisão ao carregar: **preferência salva** → **tema do sistema** (`prefers-color-scheme`) → `light`.
+- O estado do botão (ícone 🌙/☀️, texto "Modo Escuro"/"Modo Claro" e classe `btn-outline-primary`/`btn-outline-warning`) é sincronizado a cada troca.
+
+**Design tokens** (`css/styles.css`)
+
+| Variável | Claro | Escuro |
+|---|---|---|
+| `--primary-color` | `#2563eb` | `#60a5fa` |
+| `--card-bg` | `#ffffff` | `#1e293b` |
+| `--body-bg` | `#f8fafc` | `#0f172a` |
+| `--text-main` | `#1e293b` | `#f8fafc` |
+
+Classes nativas do Bootstrap (`.text-dark`, `.bg-light`, `.alert-*`, labels etc.) são sobrescritas sob `[data-theme="dark"]` para evitar texto escuro sobre fundo escuro.
+
 ---
 
 ## 4. Declaração de Dependências e CDN
@@ -182,6 +210,7 @@ Faixas: `< 40` moderado · `< 75` bom equilíbrio · `≥ 75` excelente.
 | **Bootstrap JS (bundle)** | 5.3.8 | jsDelivr | Navbar *collapse* e accordion (inclui Popper) |
 | **Chart.js** | última 4.x (`@latest`) | jsDelivr | Gráficos da página principal |
 | **Inter** (Google Fonts) | 400–700 | Google Fonts | Tipografia base |
+| **Bootstrap Modal** | 5.3.8 (já no bundle) | jsDelivr | Modais de confirmação nas ferramentas |
 
 ### Justificativa técnica de compatibilidade cross-browser
 
@@ -190,6 +219,8 @@ Faixas: `< 40` moderado · `< 75` bom equilíbrio · `≥ 75` excelente.
 - **jsDelivr** serve os arquivos com HTTP/2, cache global e alta disponibilidade, sem exigir instalação local.
 - **Fonte Inter** com *fallback* para `system-ui, -apple-system, sans-serif`, evitando quebra de layout se a fonte não carregar.
 - **CSS** usa variáveis nativas (`:root`), `cubic-bezier` e `@media print`, todos suportados pelos navegadores modernos.
+- **Tema escuro** baseado em custom properties e no atributo `data-theme`, sem dependência extra; `backdrop-filter` é declarado com o prefixo `-webkit-` para compatibilidade com o Safari.
+- **`localStorage`** guarda apenas a preferência de tema (`theme_preference`), com leitura segura via `getItem` e *fallback* para o tema do sistema.
 
 
 ---
@@ -200,14 +231,15 @@ Faixas: `< 40` moderado · `< 75` bom equilíbrio · `≥ 75` excelente.
 
 | Entrega | Responsável | Arquivos | Commits / PRs |
 |---|---|---|---|
-| Pesquisa e redação do artigo | **Guilherme Leme** | `index.html` | `#hash` |
-| Gráficos Chart.js | **Guilherme Leme** | `js/index_chart.js` | `#hash` |
-| Simulador Cognitivo | **Paulo Gutemberg** | `simulador_cognitivo.html`, `js/simulador_script.js` | `#hash` |
-| Gerador de Desconexão | **Paulo Gutemberg** | `gerador_de_desconexao.html`, `js/gerador_script.js` | `#hash` |
-| Teste de Autopercepção | **Paulo Gutemberg** | `teste_autopercepcao.html`, `js/percepcao_script.js` | `#hash` |
-| Estilização global e impressão | **Guilherme Leme** | `css/styles.css` | `#hash` |
-| Auditoria de IA | **Dupla** | `AUDITORIA_IA.md` | `#hash` |
-| Documentação e deploy | **Dupla** | `README.md`, GitHub Pages | `#hash` |
+| Pesquisa e redação do artigo | **Guilherme Leme** | `index.html` | `ce3fbee`, `90edb6d` |
+| Gráficos Chart.js | **Guilherme Leme** | `js/index_chart.js` | `90edb6d` |
+| Simulador Cognitivo | **Paulo Gutemberg** | `simulador_cognitivo.html`, `js/simulador_script.js` | `ce3fbee`, `90edb6d` |
+| Gerador de Desconexão | **Paulo Gutemberg** | `gerador_de_desconexao.html`, `js/gerador_script.js` | `ce3fbee`, `90edb6d` |
+| Teste de Autopercepção | **Paulo Gutemberg** | `teste_autopercepcao.html`, `js/percepcao_script.js` | `ce3fbee`, `90edb6d` |
+| Estilização global e impressão | **Guilherme Leme** | `css/styles.css` | `ce3fbee`, `90edb6d` |
+| Modo escuro (tema claro/escuro) | **Guilherme Leme** | `js/theme_toggle.js`, `css/styles.css` | `90edb6d` |
+| Auditoria de IA | **Dupla** | `AUDITORIA_IA.md` | `ce3fbee`, `90edb6d` |
+| Documentação e deploy | **Dupla** | `README.md`, GitHub Pages | `ce3fbee`, `90edb6d` |
 
 ### 5.2 Uso de IA e auditoria
 
@@ -217,6 +249,15 @@ O projeto foi **copilotado por IA** e submetido a **auditoria crítica manual**.
 2. **Resposta bruta da IA**: código inicial gerado.
 3. **Auditoria crítica**: falhas, débitos técnicos, acessibilidade (ARIA) e métodos obsoletos identificados.
 4. **Refatoração manual**: código final e justificativa técnica.
+
+Principais falhas da IA corrigidas manualmente:
+
+| Falha identificada | Correção |
+|---|---|
+| Modal aberto dentro da função de renderização (abria no carregamento e a cada `input`) | Abertura movida para o *listener* de clique do botão principal em cada ferramenta |
+| Texto ilegível no modo escuro (classes nativas do Bootstrap não sobrescritas) | Seção 6 do CSS sobrescreve `.text-dark`, `.bg-light`, `.alert-*`, labels etc. sob `[data-theme="dark"]` |
+| Teste socioemocional calculável com respostas incompletas | Botão desabilitado até as 4 perguntas serem respondidas |
+| `@media print` parcial (navbar, rodapé e formulários apareciam no PDF) | Impressão isola o card de resultado e força fundo branco |
 
 ### 5.3 Referências bibliográficas
 
@@ -243,7 +284,9 @@ cd site_copilotado_com_IA
 ## Limitações conhecidas
 
 - O **Teste de Autopercepção** e o **Simulador** são ferramentas **educativas**, não instrumentos clínicos nem diagnósticos validados. Em caso de sofrimento psíquico, procure um profissional de saúde.
-- Os resultados não são salvos: ao recarregar a página, os dados são perdidos.
+- Os resultados não são salvos: ao recarregar a página, os dados são perdidos (apenas a preferência de tema é persistida).
+- Os gráficos do Chart.js não são redesenhados ao alternar o tema; cores de legenda e eixos seguem o padrão da biblioteca.
+- As barras de progresso usam `role="progressbar"`, mas ainda sem `aria-valuenow`, `aria-valuemin` e `aria-valuemax`.
 
 ---
 
