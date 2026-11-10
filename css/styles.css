@@ -1,16 +1,257 @@
-.navbar-nav {
-    display: flex;
+/* ==========================================================================
+   1. DESIGN SYSTEM & VARIÁVEIS (:root & [data-theme="dark"])
+   ================================================================********** */
+   
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+
+:root {
+    /* Modo Claro (Default) */
+    --primary-color: #2563eb;
+    --surface-bg: rgba(255, 255, 255, 0.85);
+    --card-bg: #ffffff;
+    --body-bg: #f8fafc;
+    --text-main: #1e293b;
+    --text-muted: #64748b;
+    --border-color: #e2e8f0;
+    --glass-border: rgba(255, 255, 255, 0.4);
+    --shadow-depth: 0 10px 30px -5px rgba(0, 0, 0, 0.08);
+
+    /* Tipografia & Transições */
+    --font-family: 'Inter', system-ui, -apple-system, sans-serif;
+    --transition-smooth: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+[data-theme="dark"] {
+    /* Modo Escuro */
+    --primary-color: #60a5fa;
+    --surface-bg: rgba(30, 41, 59, 0.75);
+    --card-bg: #1e293b;
+    --body-bg: #0f172a;
+    --text-main: #f8fafc;
+    --text-muted: #94a3b8;
+    --border-color: #334155;
+    --glass-border: rgba(255, 255, 255, 0.1);
+    --shadow-depth: 0 12px 35px -5px rgba(0, 0, 0, 0.5);
+}
+
+/* ==========================================================================
+   2. ESTILOS GLOBAIS COM SUPORTE A TEMAS
+   ================================================================********** */
+
+body {
+    font-family: var(--font-family);
+    background-color: var(--body-bg);
+    color: var(--text-main);
+    transition: background-color 0.4s ease, color 0.4s ease;
+    line-height: 1.6;
+}
+
+h1, h2, h3, h4, h5, h6, .card-title {
+    color: var(--text-main) !important;
+}
+
+.text-secondary, .text-muted {
+    color: var(--text-muted) !important;
+}
+
+/* ==========================================================================
+   3. GLASSMORPHISM & CARDS DE PROFUNDIDADE
+   ================================================================********** */
+
+.card, .accordion-item, .modal-content {
+    background: var(--surface-bg) !important;
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid var(--glass-border) !important;
+    box-shadow: var(--shadow-depth);
+    transition: var(--transition-smooth);
+}
+
+.bg-light {
+    background-color: var(--surface-bg) !important;
+    color: var(--text-main) !important;
+}
+
+.list-group-item {
+    color: var(--text-main) !important;
+    border-color: var(--border-color) !important;
+}
+
+.form-control, .form-select {
+    background-color: var(--card-bg) !important;
+    color: var(--text-main) !important;
+    border-color: var(--border-color) !important;
+}
+
+.form-control:focus, .form-select:focus {
+    border-color: var(--primary-color) !important;
+    box-shadow: 0 0 0 0.25rem rgba(96, 165, 250, 0.25) !important;
+}
+
+/* Navbar */
+.navbar {
+    background: var(--surface-bg) !important;
+    backdrop-filter: blur(10px);
+    border-bottom: 1px solid var(--border-color);
+}
+
+.collapse {
+    display: grid;
     justify-content: center;
-
-    width: 100%;
 }
 
-.nav-link:hover {
-    text-decoration: overline;
-
-    color: darkblue;
+.nav-link {
+    color: var(--text-main) !important;
+    transition: var(--transition-smooth);
 }
 
-.sticky-top {
-    top: 20px;
+.nav-link:hover, .nav-link.active {
+    color: var(--primary-color) !important;
+}
+
+/* ==========================================================================
+   4. ANIMAÇÕES CSS (@keyframes)
+   ================================================================********** */
+
+.animate-fade-in {
+    animation: fadeIn 0.8s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+}
+
+.pulse-button {
+    animation: pulse 2s infinite;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(15px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes pulse {
+    0% {
+        box-shadow: 0 0 0 0 rgba(37, 99, 235, 0.4);
+    }
+    70% {
+        box-shadow: 0 0 0 10px rgba(37, 99, 235, 0);
+    }
+    100% {
+        box-shadow: 0 0 0 0 rgba(37, 99, 235, 0);
+    }
+}
+
+.card-hover-effect:hover {
+    transform: translateY(-6px) scale(1.01);
+    box-shadow: 0 20px 40px -10px rgba(0, 0, 0, 0.2) !important;
+}
+
+/* ==========================================================================
+   5. REGRAS DE IMPRESSÃO
+   ================================================================********** */
+
+@media print {
+    body * { visibility: hidden; }
+    #cardDiagnostico, #cardDiagnostico *,
+    #cardPlano, #cardPlano *,
+    #cardResultado, #cardResultado * {
+        visibility: visible;
+    }
+    #cardDiagnostico, #cardPlano, #cardResultado {
+        position: absolute; left: 0; top: 0; width: 100%;
+        border: none !important; box-shadow: none !important; background: #fff !important; color: #000 !important;
+    }
+    .d-print-none { display: none !important; }
+}
+
+/* ==========================================================================
+   6. SOBRESCRITA DE CLASSES NATIVAS DO BOOTSTRAP PARA MODO ESCURO
+   ================================================================********** */
+
+/* Sobrescrita de Utilitários de Texto */
+[data-theme="dark"] .text-dark,
+[data-theme="dark"] h1,
+[data-theme="dark"] h2,
+[data-theme="dark"] h3,
+[data-theme="dark"] h4,
+[data-theme="dark"] h5,
+[data-theme="dark"] h6,
+[data-theme="dark"] label,
+[data-theme="dark"] .form-label,
+[data-theme="dark"] .card-title,
+[data-theme="dark"] #previewNome,
+[data-theme="dark"] #previewNomeUser {
+    color: #f8fafc !important;
+}
+
+[data-theme="dark"] .text-secondary,
+[data-theme="dark"] .text-muted,
+[data-theme="dark"] p,
+[data-theme="dark"] span:not(.badge) {
+    color: #cbd5e1 !important;
+}
+
+/* Ajuste nos containers internos (ex: #conteudoProtocolo, #conteudoDiagnostico, #conteudoRelatorio) */
+[data-theme="dark"] .bg-light,
+[data-theme="dark"] #conteudoProtocolo,
+[data-theme="dark"] #conteudoDiagnostico,
+[data-theme="dark"] #conteudoRelatorio {
+    background-color: rgba(15, 23, 42, 0.6) !important;
+    border-color: #334155 !important;
+    color: #f8fafc !important;
+}
+
+/* Ajustes em Inputs e Placeholders no Modo Escuro */
+[data-theme="dark"] .form-control::placeholder {
+    color: #64748b !important;
+    opacity: 1;
+}
+
+[data-theme="dark"] .form-check-label {
+    color: #e2e8f0 !important;
+}
+
+/* Ajuste nas caixas de Alertas (Alerts) */
+[data-theme="dark"] .alert-info {
+    background-color: rgba(30, 58, 138, 0.4) !important;
+    color: #93c5fd !important;
+    border-color: #1e40af !important;
+}
+
+[data-theme="dark"] .alert-success {
+    background-color: rgba(20, 83, 45, 0.4) !important;
+    color: #86efac !important;
+    border-color: #166534 !important;
+}
+
+[data-theme="dark"] .alert-warning {
+    background-color: rgba(113, 63, 18, 0.4) !important;
+    color: #fde047 !important;
+    border-color: #854d0e !important;
+}
+
+[data-theme="dark"] .alert-danger {
+    background-color: rgba(127, 29, 29, 0.4) !important;
+    color: #fca5a5 !important;
+    border-color: #991b1b !important;
+}
+
+/* Ajuste nos Itens da Lista e Accordion */
+[data-theme="dark"] .list-group-item {
+    background-color: transparent !important;
+    color: #e2e8f0 !important;
+    border-color: #334155 !important;
+}
+
+[data-theme="dark"] .accordion-button {
+    background-color: var(--card-bg) !important;
+    color: #f8fafc !important;
+}
+
+[data-theme="dark"] .accordion-button:not(.collapsed) {
+    background-color: rgba(37, 99, 235, 0.2) !important;
+    color: #60a5fa !important;
 }

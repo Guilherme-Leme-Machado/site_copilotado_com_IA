@@ -1,17 +1,17 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pt-br">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>HOME</title>
+    <title>DESCONEXÃO</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
     <link rel="stylesheet" href="./css/styles.css">
 </head>
 
 <body>
-    <header class="bg-light">
+    <header>
         <nav class="navbar navbar-expand-lg p-2">
             <div class="container-fluid">
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
@@ -22,25 +22,208 @@
                 <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
                     <div class="navbar-nav">
                         <a class="nav-link" href="index.html">Inicio</a>
-                        <a class="nav-link" href="gerador_de_desconexao.html">Desconectar</a>
+                        <a class="nav-link active" href="gerador_de_desconexao.html">Desconectar</a>
                         <a class="nav-link" href="simulador_cognitivo.html">Cognição</a>
                         <a class="nav-link" href="teste_autopercepcao.html">Percepção</a>
                     </div>
                 </div>
             </div>
         </nav>
-        <div class="bg-dark">MARGEM</div>
     </header>
-    <main>
-        <!-- Insira o conteudo aqui -->
+    <main class="container my-5">
+        <div class="row justify-content-center">
+            <div class="col-lg-10">
+                <!-- Cabeçalho da Ferramenta -->
+                <div class="text-center mb-5 animate-fade-in">
+                    <h1 class="fw-bold display-5 text-primary">Gerador de Protocolo de Desconexão</h1>
+                    <p class="lead text-secondary">Configure suas metas de limites digitais avançados, acompanhe seu
+                        índice de bem-estar e exporte seu plano profissional.</p>
+                </div>
+
+                <div class="row g-4">
+                    <!-- Formulário de Configuração -->
+                    <div class="col-md-6 d-print-none">
+                        <div class="card shadow-sm border-0 h-100 card-hover-effect">
+                            <div class="card-body p-4">
+                                <h4 class="card-title mb-4 text-dark border-bottom pb-2">⚙️ Configurar Limites</h4>
+                                <form id="formProtocolo">
+                                    <div class="mb-3">
+                                        <label for="nomeProfissional" class="form-label fw-bold">Seu Nome /
+                                            Cargo</label>
+                                        <input type="text" class="form-control" id="nomeProfissional"
+                                            placeholder="Ex: Ana Silva - Desenvolvedora" required>
+                                    </div>
+
+                                    <div class="row">
+                                        <div class="col-md-6 mb-3">
+                                            <label for="horarioCorte" class="form-label fw-bold">Horário Limite</label>
+                                            <input type="time" class="form-control" id="horarioCorte" value="18:00"
+                                                required>
+                                        </div>
+                                        <div class="col-md-6 mb-3">
+                                            <label for="diasSemana" class="form-label fw-bold">Regime de Dias</label>
+                                            <select class="form-select" id="diasSemana">
+                                                <option value="Segunda a Sexta">Segunda a Sexta</option>
+                                                <option value="Dias Úteis + Finais de Semana">Todos os dias</option>
+                                                <option value="Apenas Dias Úteis">Apenas Dias Úteis</option>
+                                            </select>
+                                        </div>
+                                    </div>
+
+                                    <div class="mb-3">
+                                        <label for="metaTelas" class="form-label fw-bold">Meta Diária Sem Telas (<span
+                                                id="valorMetaTelas">3</span>h)</label>
+                                        <input type="range" class="form-range" min="1" max="8" value="3" id="metaTelas">
+                                    </div>
+
+                                    <div class="mb-3">
+                                        <label class="form-label fw-bold">Protocolos e Hábitos de Desconexão:</label>
+
+                                        <div class="accordion accordion-flush border rounded p-2 bg-light mb-3"
+                                            id="accordionAcoes">
+                                            <div class="bg-transparent mb-2">
+                                                <span class="small fw-bold text-muted d-block mb-1">Comunicação &
+                                                    Notificações</span>
+                                                <div class="form-check">
+                                                    <input class="form-check-input check-acao" type="checkbox"
+                                                        value="Desativar notificações de e-mail e Slack após as 18h"
+                                                        id="check1" checked>
+                                                    <label class="form-check-label small" for="check1">Silenciar canais
+                                                        de trabalho pós-expediente</label>
+                                                </div>
+                                                <div class="form-check">
+                                                    <input class="form-check-input check-acao" type="checkbox"
+                                                        value="Não checar mensagens corporativas nos fins de semana"
+                                                        id="check2" checked>
+                                                    <label class="form-check-label small" for="check2">Zero mensagens no
+                                                        fim de semana</label>
+                                                </div>
+                                            </div>
+
+                                            <div class="bg-transparent mb-2 border-top pt-2">
+                                                <span class="small fw-bold text-muted d-block mb-1">Ergonomia & Descanso
+                                                    Visual</span>
+                                                <div class="form-check">
+                                                    <input class="form-check-input check-acao" type="checkbox"
+                                                        value="Aplicar a regra 20-20-20 a cada 2 horas de tela"
+                                                        id="check3">
+                                                    <label class="form-check-label small" for="check3">Regra 20-20-20
+                                                        (descanso visual)</label>
+                                                </div>
+                                                <div class="form-check">
+                                                    <input class="form-check-input check-acao" type="checkbox"
+                                                        value="Fazer pausas ativas de 10 min sem dispositivos"
+                                                        id="check4">
+                                                    <label class="form-check-label small" for="check4">Pausas ativas sem
+                                                        dispositivos</label>
+                                                </div>
+                                            </div>
+
+                                            <div class="bg-transparent border-top pt-2">
+                                                <span class="small fw-bold text-muted d-block mb-1">Ambiente &
+                                                    Sono</span>
+                                                <div class="form-check">
+                                                    <input class="form-check-input check-acao" type="checkbox"
+                                                        value="Guardar o smartphone fora do quarto 1 hora antes de dormir"
+                                                        id="check5">
+                                                    <label class="form-check-label small" for="check5">Smartphone fora
+                                                        do quarto à noite</label>
+                                                </div>
+                                                <div class="form-check">
+                                                    <input class="form-check-input check-acao" type="checkbox"
+                                                        value="Evitar telas digitais durante as refeições principais"
+                                                        id="check6">
+                                                    <label class="form-check-label small" for="check6">Refeições 100%
+                                                        livres de telas</label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <button type="button" id="btnGerar"
+                                        class="btn btn-primary w-100 fw-bold py-2 shadow-sm pulse-button">🔄 Atualizar
+                                        Protocolo</button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Visualização e Exportação do Plano -->
+                    <div class="col-md-6">
+                        <div class="card shadow border-primary h-100 printable-card" id="cardPlano">
+                            <div class="card-body p-4 d-flex flex-column">
+                                <div class="d-flex justify-content-between align-items-center mb-3">
+                                    <h4 class="card-title text-primary m-0">Plano de Bem-Estar Digital</h4>
+                                    <span class="badge bg-primary d-print-inline">Oficial</span>
+                                </div>
+
+                                <div class="mb-4">
+                                    <div class="d-flex justify-content-between small text-muted mb-1">
+                                        <span>Índice de Compromisso</span>
+                                        <span id="textoPorcentagem" class="fw-bold text-success">50%</span>
+                                    </div>
+                                    <div class="progress" style="height: 12px;">
+                                        <div id="barraProgresso"
+                                            class="progress-bar progress-bar-striped progress-bar-animated bg-success transition-progress"
+                                            role="progressbar" style="width: 50%;"></div>
+                                    </div>
+                                </div>
+
+                                <div id="conteudoProtocolo"
+                                    class="border rounded p-3 bg-light flex-grow-1 shadow-inner">
+                                    <div class="border-bottom pb-2 mb-3">
+                                        <h5 id="previewNome" class="fw-bold text-dark mb-1">Profissional</h5>
+                                        <p class="text-muted small mb-0">Regime: <strong id="previewDias">Segunda a
+                                                Sexta</strong> | Limite diário: <strong
+                                                id="previewHorario">18:00</strong></p>
+                                    </div>
+
+                                    <h6 class="fw-bold text-secondary text-uppercase small tracking-wide">Metas &
+                                        Hábitos Selecionados:</h6>
+                                    <ul id="previewListaAcoes" class="list-group list-group-flush mb-3">
+                                        <!-- Itens adicionados via JS -->
+                                    </ul>
+
+                                    <div id="statusMensagem"
+                                        class="alert alert-info py-2 px-3 small mt-3 mb-0 text-center animate-pulse">
+                                        ✨ Protocolo pronto para ativação e exportação.
+                                    </div>
+                                </div>
+                                <div class="d-flex gap-2 mt-4 d-print-none">
+                                    <button id="btnImprimir" class="btn btn-dark w-100 shadow-sm">🖨️ Exportar Plano
+                                        (PDF)</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Modal Dinâmico de Confirmação -->
+        <div class="modal fade d-print-none" id="modalSucessoGerador" tabindex="-1" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content p-3 text-center">
+                    <div class="modal-body">
+                        <div class="fs-1 text-success mb-2">🎉</div>
+                        <h4 class="fw-bold">Protocolo Atualizado!</h4>
+                        <p class="text-secondary small">Seu plano de bem-estar digital foi
+                            reconfigurado com
+                            sucesso e está pronto para exportação.</p>
+                        <button type="button" class="btn btn-primary px-4 fw-bold"
+                            data-bs-dismiss="modal">Entendido</button>
+                    </div>
+                </div>
+            </div>
+        </div>
     </main>
-    <footer class="py-3 my-4 bg-light">
-        <div class="bg-dark">MARGEM</div>
+    <footer class="py-3 my-4">
         <p class="text-center text-body-secondary mt-5">© 2026 Company, Inc</p>
     </footer>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI"
         crossorigin="anonymous"></script>
+    <script src="./js/gerador_script.js"></script>
+    <script src="./js/theme_toggle.js"></script>
 </body>
 
 </html>

@@ -1,17 +1,17 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pt-br">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>HOME</title>
+    <title>COGNITIVO</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
     <link rel="stylesheet" href="./css/styles.css">
 </head>
 
 <body>
-    <header class="bg-light">
+    <header>
         <nav class="navbar navbar-expand-lg p-2">
             <div class="container-fluid">
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
@@ -23,24 +23,197 @@
                     <div class="navbar-nav">
                         <a class="nav-link" href="index.html">Inicio</a>
                         <a class="nav-link" href="gerador_de_desconexao.html">Desconectar</a>
-                        <a class="nav-link" href="simulador_cognitivo.html">Cognição</a>
+                        <a class="nav-link active" href="simulador_cognitivo.html">Cognição</a>
                         <a class="nav-link" href="teste_autopercepcao.html">Percepção</a>
                     </div>
                 </div>
             </div>
         </nav>
-        <div class="bg-dark">MARGEM</div>
     </header>
-    <main>
-        <!-- Insira o conteudo aqui -->
+    <main class="container my-5">
+        <div class="row justify-content-center">
+            <div class="col-lg-10">
+                <!-- Cabeçalho da Ferramenta -->
+                <div class="text-center mb-5 animate-fade-in">
+                    <h1 class="fw-bold display-5 text-primary">Simulador de Sobrecarga Cognitiva</h1>
+                    <p class="lead text-secondary">Mapeie seus hábitos de trabalho remoto, pausas e uso de IA para
+                        calcular seu índice de fadiga mental e obter um diagnóstico preditivo.</p>
+                </div>
+
+                <div class="row g-4">
+                    <!-- Formulário de Avaliação -->
+                    <div class="col-md-6 d-print-none">
+                        <div class="card shadow-sm border-0 h-100 card-hover-effect">
+                            <div class="card-body p-4">
+                                <h4 class="card-title mb-4 text-dark border-bottom pb-2">📊 Hábitos de Trabalho & IA
+                                </h4>
+                                <form id="formSimulador">
+                                    <div class="mb-3">
+                                        <label for="nomeProfissional" class="form-label fw-bold">Nome do Colaborador /
+                                            Função</label>
+                                        <input type="text" class="form-control" id="nomeProfissional"
+                                            placeholder="Ex: Guilherme - Engenheiro de Software" required>
+                                    </div>
+
+                                    <div class="row">
+                                        <div class="col-md-6 mb-3">
+                                            <label for="horasTrabalho" class="form-label fw-bold">Jornada Diária (<span
+                                                    id="valorHorasTrabalho">8</span>h)</label>
+                                            <input type="range" class="form-range" min="4" max="14" value="8"
+                                                id="horasTrabalho">
+                                        </div>
+                                        <div class="col-md-6 mb-3">
+                                            <label for="frequenciaPausas" class="form-label fw-bold">Pausas
+                                                Ativas</label>
+                                            <select class="form-select" id="frequenciaPausas">
+                                                <option value="alta">A cada 1h (Frequentes)</option>
+                                                <option value="media" selected>A cada 2h-3h (Regulares)</option>
+                                                <option value="rara">Raras / Quase nenhuma</option>
+                                            </select>
+                                        </div>
+                                    </div>
+
+                                    <div class="mb-3">
+                                        <label for="usoIA" class="form-label fw-bold">Uso de IAs Generativas e
+                                            Automações</label>
+                                        <select class="form-select" id="usoIA">
+                                            <option value="equilibrado" selected>Uso assistido (Reduz carga repetitiva)
+                                            </option>
+                                            <option value="excessivo">Uso contínuo / Múltiplas abas (Sobrecarga de
+                                                contexto)</option>
+                                            <option value="nenhum">Nenhum uso (Esforço 100% manual)</option>
+                                        </select>
+                                    </div>
+
+                                    <div class="mb-3">
+                                        <label class="form-label fw-bold">Fatores de Estresse / Fricção Digital:</label>
+
+                                        <div class="accordion accordion-flush border rounded p-2 bg-light mb-3"
+                                            id="accordionEstresse">
+                                            <div class="bg-transparent mb-2">
+                                                <span class="small fw-bold text-muted d-block mb-1">Interrupções &
+                                                    Reuniões</span>
+                                                <div class="form-check">
+                                                    <input class="form-check-input check-fator" type="checkbox"
+                                                        value="Mais de 4 horas diárias de reuniões por vídeo"
+                                                        id="fator1" checked>
+                                                    <label class="form-check-label small" for="fator1">Excessos de
+                                                        chamadas/videoconferências</label>
+                                                </div>
+                                                <div class="form-check">
+                                                    <input class="form-check-input check-fator" type="checkbox"
+                                                        value="Notificações instantâneas ativadas o dia todo"
+                                                        id="fator2" checked>
+                                                    <label class="form-check-label small" for="fator2">Notificações
+                                                        constantes sem filtro</label>
+                                                </div>
+                                            </div>
+
+                                            <div class="bg-transparent border-top pt-2">
+                                                <span class="small fw-bold text-muted d-block mb-1">Multitarefa &
+                                                    Rotina</span>
+                                                <div class="form-check">
+                                                    <input class="form-check-input check-fator" type="checkbox"
+                                                        value="Troca constante de contexto entre projetos" id="fator3">
+                                                    <label class="form-check-label small" for="fator3">Troca frequente
+                                                        de contexto/tarefas</label>
+                                                </div>
+                                                <div class="form-check">
+                                                    <input class="form-check-input check-fator" type="checkbox"
+                                                        value="Trabalho rotineiro após o horário regulamentar"
+                                                        id="fator4">
+                                                    <label class="form-check-label small" for="fator4">Extensão
+                                                        frequente de expediente</label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <button type="button" id="btnCalcular"
+                                        class="btn btn-primary w-100 fw-bold py-2 shadow-sm pulse-button">🧮 Calcular
+                                        Sobrecarga</button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Visualização do Diagnóstico -->
+                    <div class="col-md-6">
+                        <div class="card shadow border-primary h-100 printable-card" id="cardDiagnostico">
+                            <div class="card-body p-4 d-flex flex-column">
+                                <div class="d-flex justify-content-between align-items-center mb-3">
+                                    <h4 class="card-title text-primary m-0">Diagnóstico Cognitivo</h4>
+                                    <span id="badgeNivel" class="badge bg-success d-print-inline">Equilibrado</span>
+                                </div>
+
+                                <div class="mb-4">
+                                    <div class="d-flex justify-content-between small text-muted mb-1">
+                                        <span>Índice de Sobrecarga Cognitiva</span>
+                                        <span id="textoPontuacao" class="fw-bold text-success">35%</span>
+                                    </div>
+                                    <div class="progress" style="height: 12px;">
+                                        <div id="barraSobrecarga"
+                                            class="progress-bar progress-bar-striped progress-bar-animated bg-success transition-progress"
+                                            role="progressbar" style="width: 35%;"></div>
+                                    </div>
+                                </div>
+
+                                <div id="conteudoDiagnostico"
+                                    class="border rounded p-3 bg-light flex-grow-1 shadow-inner">
+                                    <div class="border-bottom pb-2 mb-3">
+                                        <h5 id="previewNome" class="fw-bold text-dark mb-1">Profissional</h5>
+                                        <p class="text-muted small mb-0">Jornada: <strong
+                                                id="previewJornada">8h/dia</strong> | Uso de IA: <strong
+                                                id="previewIA">Assistido</strong></p>
+                                    </div>
+
+                                    <h6 class="fw-bold text-secondary text-uppercase small tracking-wide">Recomendações
+                                        Personalizadas:</h6>
+                                    <ul id="listaRecomendacoes" class="list-group list-group-flush mb-3">
+                                        <!-- Recomendações geradas via JS -->
+                                    </ul>
+
+                                    <div id="statusDiagnostico"
+                                        class="alert alert-success py-2 px-3 small mt-3 mb-0 text-center animate-pulse">
+                                        ✅ Sua carga mental está dentro de limites sustentáveis.
+                                    </div>
+                                </div>
+
+                                <div class="d-flex gap-2 mt-4 d-print-none">
+                                    <button id="btnImprimir" class="btn btn-dark w-100 shadow-sm">🖨️ Exportar
+                                        Diagnóstico (PDF)</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Modal Dinâmico de Confirmação -->
+        <div class="modal fade d-print-none" id="modalSucessoCognitivo" tabindex="-1" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content p-3 text-center">
+                    <div class="modal-body">
+                        <div class="fs-1 text-success mb-2">🎉</div>
+                        <h4 class="fw-bold">Simulador Atualizado!</h4>
+                        <p class="text-secondary small">Seu Diagnóstico Cognitivo foi
+                            reconfigurado com
+                            sucesso e está pronto para exportação.</p>
+                        <button type="button" class="btn btn-primary px-4 fw-bold"
+                            data-bs-dismiss="modal">Entendido</button>
+                    </div>
+                </div>
+            </div>
+        </div>
     </main>
-    <footer class="py-3 my-4 bg-light">
-        <div class="bg-dark">MARGEM</div>
+    <footer class="py-3 my-4">
         <p class="text-center text-body-secondary mt-5">© 2026 Company, Inc</p>
     </footer>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI"
         crossorigin="anonymous"></script>
+    <script src="./js/simulador_script.js"></script>
+    <script src="./js/theme_toggle.js"></script>
 </body>
 
 </html>
